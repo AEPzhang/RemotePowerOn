@@ -1,2 +1,2 @@
-POWER_ON = False
+POWER_STATE = False
 RUN_PORT = 21081

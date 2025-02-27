@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from config import POWER_ON, RUN_PORT  # 导入配置文件中的POWER_ON
+from config import POWER_STATE, RUN_PORT  # 导入配置文件中的POWER_ON
 
 app = FastAPI()
 
@@ -7,16 +7,21 @@ app = FastAPI()
 async def root():
     return {"code": "404"}
 
-# @app.get("/hello/{name}")
-# async def say_hello(name: str):
-#     return {"message": f"Hello {name}"}
 
-@app.get("/PowerOn")
-async def power_on(formal: bool = POWER_ON):  # 使用配置文件中的默认值
+@app.get("/PowerState")
+async def power_on(formal: bool = POWER_STATE):  # 使用配置文件中的默认值
     if formal:
-        return {"code": "200", "PowerOn": True}
+        return {"code": "200", "POWER_STATE": True}
     else:
-        return {"code": "200", "PowerOn": False}
+        return {"code": "200", "POWER_STATE": False}
+
+@app.get("/PowerSwitch")
+async def power_switch():
+    global POWER_STATE
+    POWER_STATE = not POWER_STATE
+    print("POWER_STATE:", POWER_STATE)
+    return {"code": "200", "POWER_STATE": POWER_STATE}
+
 
 if __name__ == "__main__":
     import uvicorn
